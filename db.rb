@@ -25,11 +25,13 @@ class Db
 
   begin
     db = SQLite3::Database.new 'db_study.db'
-
     db.execute <<~SQL
       CREATE TABLE items(
+        id integer primary key autoincrement,
         titulo varchar(255),
-        categoria varchar(255)
+        categoria varchar(255),
+        descricao varchar(255),
+        concluido number(1)
       );
     SQL
   rescue SQLite3::Exception => e
