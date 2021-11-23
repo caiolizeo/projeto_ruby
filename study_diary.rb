@@ -4,11 +4,12 @@ require 'io/console'
 
 INSERT = 1
 SELECT_ALL = 2
-SELECT = 3
-DELETE = 4
-INSERT_CAT = 5
-DELETE_CAT = 6
-EXIT = 7
+MARK_AS_DONE = 3
+SELECT = 4
+DELETE = 5
+INSERT_CAT = 6
+DELETE_CAT = 7
+EXIT = 8
 
 BY_CAREGORY = 1
 BY_VALUE = 2
@@ -32,6 +33,7 @@ def menu
   puts <<~MENU
     [#{INSERT}] Cadastrar um item para estudar
     [#{SELECT_ALL}] Ver todos os itens cadastrados
+    [#{MARK_AS_DONE}] Marcar estudo como finalizado
     [#{SELECT}] Buscar um item de estudo
     [#{DELETE}] Deletar um item de estudo
     [#{INSERT_CAT}] Cadastrar categoria
@@ -67,6 +69,16 @@ def select_all
     puts "ID: #{i.id} | Título: #{i.title} | Categoria: #{i.category} | Descrição: #{i.description}#{' ***FINALIZADO***' if i.done == 1}"
   end
   puts "Nenhum item cadastrado" if bo.search_all_items.length == 0
+end
+
+def done
+  bo = StudyBo.new
+  bo.search_all_items.each do |i|
+    puts "ID: #{i.id} | Título: #{i.title} | Categoria: #{i.category} | Descrição: #{i.description}" if i.done == 0
+  end
+  print "Selecione um item pelo ID: "
+  id = gets.to_i
+  bo.mark_as_done(id)
 end
 
 def s_menu
@@ -144,6 +156,8 @@ loop do
     register
   when SELECT_ALL
     select_all
+  when MARK_AS_DONE
+    done
   when SELECT
     search_menu
   when DELETE
