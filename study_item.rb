@@ -10,12 +10,4 @@ class StudyItem
     @description = description
     @done = done
   end
-
-
-
-
-
-
-
-
 end
