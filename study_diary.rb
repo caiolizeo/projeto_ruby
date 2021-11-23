@@ -6,7 +6,9 @@ INSERT = 1
 SELECT_ALL = 2
 SELECT = 3
 DELETE = 4
-EXIT = 5
+INSERT_CAT = 5
+DELETE_CAT = 6
+EXIT = 7
 
 BY_CAREGORY = 1
 BY_VALUE = 2
@@ -32,6 +34,8 @@ def menu
     [#{SELECT_ALL}] Ver todos os itens cadastrados
     [#{SELECT}] Buscar um item de estudo
     [#{DELETE}] Deletar um item de estudo
+    [#{INSERT_CAT}] Cadastrar categoria
+    [#{DELETE_CAT}] Deletar categoria
     [#{EXIT}] Sair
   MENU
 
@@ -48,6 +52,13 @@ def register
   print "\nDigite a descrição do item de estudo: "
   desc = gets.chomp
   bo.register(titulo, category, desc)
+end
+
+def register_category
+  bo = StudyBo.new
+  print "\nDigite o nome da categoria: "
+  cat = gets.chomp
+  bo.register_category(cat)
 end
 
 def select_all
@@ -118,6 +129,12 @@ def delete_item
   bo.delete_item(id)
 end
 
+def delete_category
+  bo = StudyBo.new
+  category = bo.search_category.name
+  bo.delete_category(category)
+end
+
 clear
 opt = menu
 loop do
@@ -131,6 +148,10 @@ loop do
     search_menu
   when DELETE
     delete_item
+  when INSERT_CAT
+    register_category
+  when DELETE_CAT
+    delete_category
   when EXIT
     break
   else

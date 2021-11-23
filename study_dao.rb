@@ -15,6 +15,17 @@ class StudyDao
     end
   end
 
+  def insert_category(category)
+    begin
+      db = SQLite3::Database.open 'db_study.db'
+      db.execute "INSERT INTO categoria VALUES ( ? )", category
+    rescue SQLite3::Exception => e
+      puts e
+    ensure
+      db.close
+    end
+  end
+
   def select_all
     begin
       db = SQLite3::Database.open 'db_study.db'
@@ -58,6 +69,17 @@ class StudyDao
     begin
       db = SQLite3::Database.open 'db_study.db'
       db.execute 'DELETE FROM items WHERE id = ?', id
+    rescue SQLite3::Exception => e
+      puts e
+    ensure
+      db.close
+    end
+  end
+
+  def delete_category(category)
+    begin
+      db = SQLite3::Database.open 'db_study.db'
+      db.execute "DELETE FROM categoria WHERE categoria = ?", category
     rescue SQLite3::Exception => e
       puts e
     ensure

@@ -9,6 +9,11 @@ class StudyBo
     dao.insert_item(title, category, description)
   end
 
+  def register_category(category)
+    dao = StudyDao.new
+    dao.insert_category(category)
+  end
+
   def mark_as_done(id)
     dao = StudyDao.new
     dao.update_done(id)
@@ -44,6 +49,11 @@ class StudyBo
   def delete_item(id)
     dao = StudyDao.new
     dao.delete_item(id)
+  end
+
+  def delete_category(cat)
+    dao = StudyDao.new
+    dao.delete_category(cat)
   end
 
   def search_categories
