@@ -4,68 +4,60 @@ require './category'
 
 class StudyBo
 
-  def register(title, category, description)
-    dao = StudyDao.new
-    dao.insert_item(title, category, description)
+  def self.register(title, category, description)
+    StudyDao.insert_item(title, category, description)
   end
 
-  def register_category(category)
-    dao = StudyDao.new
-    dao.insert_category(category)
+  def self.register_category(category)
+    StudyDao.insert_category(category)
   end
 
-  def mark_as_done(id)
-    dao = StudyDao.new
-    dao.update_done(id)
+  def self.mark_as_done(id)
+    StudyDao.update_done(id)
   end
 
-  def search_all_items
+  def self.search_all_items
     study_objects = []
-    dao = StudyDao.new
-    dao.select_all.each do |item|
-      study_objects << StudyItem.new(item['id'], item['titulo'], item['categoria'], item['descricao'], item['concluido'])
-    end
+    StudyDao.select_all
+            .map { |hash| hash.transform_keys!(&:to_sym) }
+            .map { |item| study_objects << StudyItem.new(**item) }
     study_objects
   end
 
-  def search_by_category(category)
+  def self.search_by_category(category)
     study_objects = []
-    dao = StudyDao.new
-    dao.select_by_category(category).each do |item|
-      study_objects << StudyItem.new(item['id'], item['titulo'], category, item['descricao'], item['concluido'])
-    end
+    StudyDao.select_by_category(category)
+       .map { |hash| hash.transform_keys!(&:to_sym) }
+       .map { |item| study_objects << StudyItem.new(**item) }
     study_objects
   end
 
-  def search_by_value(value)
+  def self.search_by_value(value)
     study_objects = []
-    dao = StudyDao.new
-    dao.select_by_value(value).each do |item|
-      study_objects << StudyItem.new(item['id'],item['titulo'],item['categoria'],item['descricao'],item['concluido'])
-    end
+
+    StudyDao.select_by_value(value)
+            .map { |hash| hash.transform_keys!(&:to_sym) }
+            .map { |item| study_objects << StudyItem.new(**item) }
     study_objects
   end
 
-  def delete_item(id)
-    dao = StudyDao.new
-    dao.delete_item(id)
+  def self.delete_item(id)
+    StudyDao.delete_item(id)
   end
 
-  def delete_category(cat)
-    dao = StudyDao.new
-    dao.delete_category(cat)
+  def self.delete_category(cat)
+    StudyDao.delete_category(cat)
   end
 
-  def search_categories
+  def self.search_categories
     category_objects = []
-    dao = StudyDao.new
-    dao.select_categories.each do |category|
-      category_objects << Category.new(category['categoria'])
+    StudyDao.select_categories.each do |category|
+      category_objects << Category.new(category['category'])
     end
     category_objects
   end
 
-  def search_category
+  def self.search_category
     categories = search_categories
     puts "\nSelecione uma categoria: "
 
